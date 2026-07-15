@@ -1,0 +1,76 @@
+# Formily 原理及场景应用
+
+###### 背景介绍&问题分析:
+
+在目前的To B端也就是所谓的后台管理系统中，表单其实都是我们绕不开的话题，那么表单设计是一个不可或缺的重要组成部分。它不仅关系到用户体验的好坏，还直接影响着代码逻辑处理的效率。一个设计良好的表单既能表达信息的层次，也能提升代码逻辑的可读性以及良好的可维护性
+
+通常在前端技术实现层面，最常见的场景就是表单的联动，可以根据不同业务场景调整显示内容或者书写不同的业务逻辑，其实这也是表单最复杂的场景。比如，当某个条件满足时自动隐藏或显示某些选项；或者根据用户的选择动态加载更多相关信息等。
+
+举个最近我正在写的比较复杂的业务场景，大家可以体会一下，也可以想一下目前 我们基于目前的Base框架的Antd Form是怎么个实现思路，实现起来的可维护性是怎么样的？
+
+![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/Pd6l2Z7XjpmMdl7M/img/dbeb8190-e3b8-4db5-87c5-adb4d1ad18d9.png)
+
+ PS： antD 是基于rc-field-form的二次封装，其中我认为有几个比较重要的问题
+
+1:不支持动态增减字段的局部渲染优化
+
+2:动态设置校验问题
+
+3:字段间复杂的联动代码混乱
+
+如果对rc-field-form  实现原理比较感兴趣，可以看下这个文章[https://juejin.cn/post/7367644434983321638](https://juejin.cn/post/7367644434983321638)
+
+具体原理：我大概简述一下，他就是实现了一个全局的Store + contextProvider + Hooks +发布订阅模式去实现数据共享以及更新依赖，简单介绍一下，初始化的时候创建一个Form实例（我封装的DrawerForm实现思路是参考它的实现思路），而Field 用的Class方式实现的，好处就是节省代码量（继承的方式）
+
+![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/Pd6l2Z7XjpmMdl7M/img/153da938-526d-411b-80c3-ff4b122e4cf1.png)
+
+###### 目前前端表单领域其他的解决方案介绍
+
+我们上面说了背景以及简单介绍了一下目前大家正在使用的antd的Form的实现原理，那接下来，我大概介绍一下前端领域常用的表单解决方案有哪些？下面我列举几个以及相关对比，后面大家有兴趣自己可以看一下
+
+![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/Pd6l2Z7XjpmMdl7M/img/8cd68f1a-80d4-4040-946e-9338fa460468.png)
+
+###### Formily原理浅析 ：为什么要用Formily ?  好处是什么？
+
+ 我们大家可以思考一个问题，其实在formily之前，Rc-field-form 和 reacr-hook-form 已经出现了，也已经解决了全量渲染的问题，为什么还会开源一个针对表单的包，它的好处相较于之前好在哪里？
+
+我先给大家说一下之前的formily1.x 我认为他核心做了如下几点
+
+1.  API方式： 相当于把经常用的ref挂载模式全部采用action的方式结构出来
+    
+2.  逻辑内聚：之前都是通过逻辑onChange 等等事件的方式去实现业务联动逻辑 ，现在统一把逻辑基于订阅的方式收口到Effect 中
+    
+    ![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/Pd6l2Z7XjpmMdl7M/img/96d29e33-ec44-419d-b0e5-3b4304dc5179.png)
+    
+3.  我觉得比较重要的一点 path\_rule 这个是 formily 自定的DSL，可以精准的定位到某个表单项，又有能力做批量的处理、批量订阅，这其实也可以算一大创新。一对多，一对一，多对一都可以很好的表达。
+    
+4.  最核心的一点在 $( 'event\_type' , 'path\_rule ' ) ， 意思是搜索 path\_rule 所有命中的表单项，订阅他们的 event\_type 事件，最后整体的返回是一个 rxjs 流。(这里有兴趣，可以去学习一下Rxjs ,牛逼的一批，[https://cn.rx.js.org/manual/overview.html](https://cn.rx.js.org/manual/overview.html))
+    
+    ![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/Pd6l2Z7XjpmMdl7M/img/e8f6557d-3a5b-4471-ab2c-64347a48cd66.png)
+    
+    还有一个点，其实React 响应式 的实现大多数都是基于数据驱动理念，但是Formily是基于API方式实现组件之间的通信。这样的好处是可以将更新精准的局限在某个组件，而不会从根节点往下全量更新（也就是更精细化的单点更新，而不是全量渲染）
+    
+    接下来，我再来说一下数据更新的过程，拿上面的截图，简单来说：orgThirdSupplierList.\*.orgId ->field.setState\->同步变更到Form( setFormValueIn )->调用监听函数 orgThirdSupplierList.\*.orgId.validate  \->设置错误信息到field \->同步错误信息到 Forms
+    
+    再简单说说联动怎么实现，初始化的时候会把effect 中的生命周期监听放到 subscribe中，如果值发生改变，会调用handle中的dispatch 函数去发布该声明周期事件，然后去effect 中添加的生命周期钩子函数中寻找对应的监听函数并运行
+    
+    最后我们看看为什么要升级成Formily2.0 , 1.0的缺陷是什么
+    
+    1.  文档太垃圾，我真的要吐槽，写的太拉了，感觉就是纯技术在写一些垃圾文档，上手成本太高啦
+        
+    2.  包体积过大（ rxjs，styled-components ）
+        
+    3.  为了解决脏检测一直在迭代（ 新旧值的对比 ），但是还是不可避免的会有，因为它根本没有像MobX一样的依赖追踪机制,其实这是个很严重的问题
+        
+
+那接下来，我给大家介绍一下Formily 2.x,也就是我现在在用的版本
+
+先看看设计思路
+
+![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/Pd6l2Z7XjpmMdl7M/img/411d0b44-8d26-4b3d-b788-f6f287d41d79.png)
+
+整体架构图
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/pa7N3jnxPhz0e4k1/e4b311c142cd484296be257604d001fc1485.png)
+
+有兴趣可以看一下可以去看下formily/reactive 的实现，他是自己实现的reactive ,就是为了解决依赖追踪的问题以及脏检测的问题, 这样还有一个好处，可以颗粒度更细的更新渲染视图，因为实现了依赖追踪，所以可以实现单点更新，并且抛弃了Rxjs 以及styled-components，包体积也会减小，所以这是目前市场,我认为不管从代码的可维护性上，性能的极致性上，以及对于前端的技术理解上，都是一个可以值得大家使用，学习的一个Form 表单库

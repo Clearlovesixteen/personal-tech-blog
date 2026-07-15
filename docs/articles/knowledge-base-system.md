@@ -1,0 +1,163 @@
+# 知识库系统
+
+## 前端知识库系统的价值：
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/7085935c-8fa9-4ce1-a7e9-16264bae8a16.webp)
+
+### 原型图：
+
+[https://modao.cc/ai/share/6a4b535475d0275ef69a1d: https://modao.cc/ai/share/6a4b535475d0275ef69a1d](https://modao.cc/ai/share/6a4b535475d0275ef69a1d)
+
+核心是文档管理、AI 问答、知识图谱这些。
+
+文档会做权限管理，只有有权限的文档可以检索出来用来生成回答。
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/432709be-4ada-4146-98c9-a7c19fdd63b5.webp)
+
+支持这些文档类型检索：
+
+**文本类文件**:
+
+支持格式：PDF、DOCX、DOC、XLSX、XLS、PPTX、PPT、TXT、MD、CSV、JSON
+
+支持输入网页 URL，系统自动抓取页面正文并导入知识库归档检索
+
+**图片文件（JPG、PNG）**:
+
+上传后通过视觉嵌入模型提取图像特征，同时调用大模型 OCR / 图像理解生成图片描述文本；
+
+支持双向多模态检索：文字搜图片、本地上传图片以图搜图。
+
+**音频文件（MP3、WAV、M4A）**：
+
+上传自动执行 ASR 语音转文字，将完整转录文本归档，依托文本内容参与检索。
+
+**视频文件（MP4）**：
+
+用视频理解模型做全维度内容解析，同步提取音频文字与画面视觉信息，整合生成完整文本内容用于检索，并输出视频多模态向量，实现图文视频跨模态检索。
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/0bc0540f-41df-415a-8603-b9594bdf5318.webp)
+
+### 技术栈：
+
+LangChain、LangGraph、DeepAgents、Vercel AI SDK、Nest、Redis、PostgreSQL、Redis、ElasticSearch、Neo4j、MinIO、Docker Compose、Mem0、LangSmith、LangFuse 等
+
+### 具体功能点：
+
+1.  向量 + 关键词（PGVector + ElasticSearch） 实现混合检索，用 RRF 融合 和 Reranker 模型重排，实现多路召回，提高检索准确率
+    
+2.  利用 Neo4j 构建知识图谱，通过 LLM 抽取文档实体、关系自动存入图数据库。用户问题会用 LLM 抽取实体，执行多跳检索，把推理链路和 RAG 的结果融合送入 Prompt 上下文，提升复杂业务问题回答的完整性与逻辑性
+    
+3.  支持 PDF、Word、TXT 等图文格式文档，支持图片、音视频等多媒体文件，统一解析为 Markdown 文档，会自动提取文档中的图片上传到 Minio，并替换文档中的图片为 url。图片基于 OCR 实现解析、音频基于 ASR、视频基于分片 + 视频理解模型解析成文档。
+    
+4.  Redis 实现短期记忆存储（滑动窗口 + 摘要），Mem0 实现长期记忆分层存储，包括用户级、会话级记忆
+    
+5.  基于 RBAC 模型搭建分层权限管控体系，落地页面、菜单、按钮三级细粒度权限拦截；同时联动检索逻辑做数据权限隔离，依据当前用户角色过滤文档池，不同人员仅可查询自身权限范围内的知识资料，实现功能权限与数据权限双重隔离，满足多部门资料分级保密需求。
+    
+6.  基于 LangGraph 实现 Agentic RAG 架构，Agent 自主判别问题复杂度，动态决策调用混合检索、图谱推理等工具，灵活适配多维度复杂业务提问，规避固定检索流程带来的回答局限性
+    
+7.  基于 ASR + 流式 TTS 实现语音交互，SSE 实现文字流式输出，WebSocket + 流式 TTS 实现语音的同步流式播放。
+    
+8.  本地开发用 LangSmith 调试，线上用 LangFuse 收集数据，实现全链路观测，记录检索耗时、LLM 调用成本、问答召回来源、模型报错日志等。搭建 RAG 和 Agent 效果量化评估机制，自动跑实验来评估检索效果。
+    
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/1d782132-bcc9-4909-ba83-b56772ca4866.webp)
+
+### 各个库的功能点：
+
+**PostgreSQL（带 PGVector 向量扩展）**：
+
+存储结构化业务数据 + 文档分片向量
+
+*   用户、角色、权限全量 RBAC 数据：
+    
+    user 用户表、role 角色表、permission 权限表、department 部门表等
+    
+*   文档、分片：
+    
+    document 文档表、doc\_chunk 文档分片表
+    
+*   AI 问答会话历史
+    
+
+chat\_session 对话会话表、chat\_message 问答消息记录表
+
+**ElasticSearch（全文关键词检索引擎）**：
+
+文档分片全文索引库，负责关键词召回、全文模糊检索
+
+**Neo4j（知识图谱图数据库）**：
+
+存储实体、关系，支撑多跳图谱推理检索
+
+**Redis（缓存中间件）：**
+
+缓存、临时数据等
+
+*   短期记忆：滑动窗口、近期对话摘要
+    
+*   全局缓存数据：用户权限等
+    
+*   排行榜：热门文档等
+    
+
+**MinIO（对象存储）：**
+
+存储全部静态文件资源
+
+*   用户上传原始文件：PDF、Word、PPT、图片、音频、视频源文件
+    
+*   文档解析资源：解析后内嵌图片
+    
+
+**Mem0（长期记忆存储）**：
+
+*   用户级长期记忆：用户个人偏好、检索偏好、业务角色习惯
+    
+*   会话级长期记忆：单次对话上下文
+    
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/6730822b-8a91-4bc1-8408-cc5115baad77.webp)
+
+初步决定的文件解析流程：
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/30f5af3a-eacf-4dda-be0e-64cdd032bed7.webp)
+
+ps: 这里文档上传后的处理耗时比较高，所以我们放到 Redis 任务队列里，异步来做,加一个任务表来记录进度，前端可以从这个表中查询任务状态。
+
+### Agent 问答流程：
+
+用户输入自然语言提问 → 鉴权校验 Redis 缓存用户权限白名单
+
+1.  LangGraph Agent 自主判断问题复杂度：简单问题仅调用混合检索，复杂业务问题额外触发图谱多跳推理；
+    
+2.  多路召回：ES 关键词召回 + PGVector 向量召回；RRF 融合得分，Reranker 重排；
+    
+3.  LLM 抽取问题实体，查询 Neo4j 执行多跳关联检索，获取实体推理链路；
+    
+4.  过滤所有用户无权限文档分片；
+    
+5.  Redis 读取短期滑动窗口对话摘要，Mem0 拉取用户 / 会话长期记忆；
+    
+6.  检索分片、图谱推理结果、分层记忆统一拼接至 Prompt 上下文；
+    
+7.  LLM 生成回答，SSE 流式推送文字；可选 TTS 生成语音 WebSocket 同步播放；
+    
+8.  全链路日志上报 LangFuse，记录耗时、Token 消耗、召回分片、异常报错；
+    
+9.  问答记录持久化存入 chat\_session/chat\_message 表。
+    
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/f61d92c7-1d7b-4d82-a5bf-76200f73c44e.webp)
+
+ps: 权限白名单就是当前登录用户能访问的全部文件夹、文档 ID 集合，放在 redis 里，我们检索出文档后，会过滤掉无权限的文档，再来生成回答。
+
+### 和DIfy的区别
+
+Dify 搭建的知识库支持递归分块、向量 + 全文检索 + 重排的混合检索，但是它不支持知识图谱，无法通过 LLM 自动抽取文档中的实体、关系，从而实现多跳关联推理，缺少分级数据权限管控，无法按部门、岗位隔离知识库与文档，检索时不能自动过滤无权限资料，存在内部涉密文档泄露风险，不支持完整多模态解析与检索链路，缺少图片 OCR 图文识别、音频 ASR 转写、视频理解解析能力，无法处理图片、音频、视频类业务资料，平台底层架构封装度高，难以深度对接自定义 Agent，拓展成本极高。
+
+![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/637ce9c0-3e1a-4982-a883-4c0d7407ad50.webp)
+
+## 总结
+
+以上的内容是我参考了几个知识库的架构设计去做的初步方案，自己想的也不是很全，所以有一定的局限性，但是大致的方向，我认为是没问题的，仅限自己学习和实践用

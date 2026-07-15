@@ -62,6 +62,32 @@
   box-shadow: 0 16px 40px rgba(39, 31, 27, 0.08);
 }
 
+.vp-doc div[class*='language-'] {
+  margin: 22px 0;
+  border: 1px solid rgba(56, 43, 35, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 18px 46px rgba(39, 31, 27, 0.08);
+  overflow: hidden;
+}
+
+.dark .vp-doc div[class*='language-'] {
+  border-color: rgba(255, 242, 224, 0.12);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
+}
+
+.vp-doc div[class*='language-'] code {
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.vp-doc div[class*='language-'] pre {
+  max-height: 680px;
+}
+
+.vp-doc div[class*='language-'] .lang {
+  letter-spacing: 0;
+}
+
 .vp-doc table {
   display: table;
   width: 100%;

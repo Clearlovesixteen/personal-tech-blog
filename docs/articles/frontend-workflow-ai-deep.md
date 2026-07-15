@@ -62,25 +62,27 @@ Tool 的特点是：
     
     一个 Tool 可以写成这样：
     
-    {  
-    "name":"search\_component\_docs",  
-    "description":"查询公司组件库文档，适合在生成前端页面代码前查找组件 API 和示例",  
-    "parameters":{  
-    "type":"object",  
-    "properties":{  
-    "componentName":{  
-    "type":"string",  
-    "description":"组件名称，例如 FormilyTable、SearchForm、DetailModal"  
-    },  
-    "scenario":{  
-    "type":"string",  
-    "description":"使用场景，例如列表筛选、详情弹窗、可编辑表格"  
-    }  
-    },  
-    "required":\["componentName","scenario"\],  
-    "additionalProperties":**false**  
-    }  
-    }
+```json
+{
+  "name": "search_component_docs",
+  "description": "查询公司组件库文档，适合在生成前端页面代码前查找组件 API 和示例",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "componentName": {
+        "type": "string",
+        "description": "组件名称，例如 FormilyTable、SearchForm、DetailModal"
+      },
+      "scenario": {
+        "type": "string",
+        "description": "使用场景，例如列表筛选、详情弹窗、可编辑表格"
+      }
+    },
+    "required": ["componentName", "scenario"],
+    "additionalProperties": false
+  }
+}
+```
     
     这段描述解决的是“模型如何知道工具存在、如何填参数”的问题。但 Tool 并不知道自己什么时候该被调用。决定调用它的，可以是 Agent，也可以是 Workflow，也可以是普通业务代码。
     
@@ -296,68 +298,88 @@ Tool 的特点是：
     
     ### 5.1 建议的 Workflow 协议结构
     
-    {  
-    "workflowId":"wf\_frontend\_demo",  
-    "version":"1.0.0",  
-    "viewport":{"x":0,"y":0,"zoom":1},  
-    "nodes":\[  
-    {  
-    "id":"start\_1",  
-    "type":"start",  
-    "title":"用户输入",  
-    "position":{"x":80,"y":120},  
-    "inputs":{},  
-    "outputs":{  
-    "query":{"type":"string"}  
-    },  
-    "props":{},  
-    "policies":{  
-    "timeoutMs":1000  
-    },  
-    "meta":{  
-    "tags":\["entry"\]  
-    }  
-    },  
-    {  
-    "id":"llm\_1",  
-    "type":"llm",  
-    "title":"需求抽取",  
-    "position":{"x":360,"y":120},  
-    "inputs":{  
-    "query":"&#123;&#123;start\_1.query}}"  
-    },  
-    "outputs":{  
-    "intent":{  
-    "type":"string",  
-    "enum":\["page","tracking","migration"\]  
-    },  
-    "entities":{  
-    "type":"array",  
-    "items":{"type":"string"}  
-    }  
-    },  
-    "props":{  
-    "model":"gpt-4.1",  
-    "temperature":0**.**2,  
-    "prompt":"请抽取任务意图与关键实体，输出结构化 JSON。"  
-    },  
-    "policies":{  
-    "timeoutMs":15000,  
-    "maxRetries":1,  
-    "costBudget":{  
-    "maxInputTokens":4000,  
-    "maxOutputTokens":600  
-    }  
-    },  
-    "meta":{  
-    "tags":\["classification","llm"\]  
-    }  
-    }  
-    \],  
-    "edges":\[  
-    {"id":"e\_start\_llm","source":"start\_1","target":"llm\_1"}  
-    \]  
+```json
+{
+  "workflowId": "wf_frontend_demo",
+  "version": "1.0.0",
+  "viewport": {
+    "x": 0,
+    "y": 0,
+    "zoom": 1
+  },
+  "nodes": [
+    {
+      "id": "start_1",
+      "type": "start",
+      "title": "用户输入",
+      "position": {
+        "x": 80,
+        "y": 120
+      },
+      "inputs": {},
+      "outputs": {
+        "query": {
+          "type": "string"
+        }
+      },
+      "props": {},
+      "policies": {
+        "timeoutMs": 1000
+      },
+      "meta": {
+        "tags": ["entry"]
+      }
+    },
+    {
+      "id": "llm_1",
+      "type": "llm",
+      "title": "需求抽取",
+      "position": {
+        "x": 360,
+        "y": 120
+      },
+      "inputs": {
+        "query": "{{start_1.query}}"
+      },
+      "outputs": {
+        "intent": {
+          "type": "string",
+          "enum": ["page", "tracking", "migration"]
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "props": {
+        "model": "gpt-4.1",
+        "temperature": 0.2,
+        "prompt": "请抽取任务意图与关键实体，输出结构化 JSON。"
+      },
+      "policies": {
+        "timeoutMs": 15000,
+        "maxRetries": 1,
+        "costBudget": {
+          "maxInputTokens": 4000,
+          "maxOutputTokens": 600
+        }
+      },
+      "meta": {
+        "tags": ["classification", "llm"]
+      }
     }
+  ],
+  "edges": [
+    {
+      "id": "e_start_llm",
+      "source": "start_1",
+      "target": "llm_1"
+    }
+  ]
+}
+```
     
     ### 5.2 节点字段说明
     
@@ -473,44 +495,28 @@ Tool 的特点是：
     
     执行引擎至少要解决八类问题：
     
-    :::
     请输入标题
     
-    :::
     **01 图校验：节点是否完整、边是否合法、变量是否可解析。**
-    :::
-    :::
     **02 图编译：构建邻接表、入度表、分支规则和执行计划。**
-    :::
-    :::
     **03 状态管理：保存每个节点的状态和输出。**
-    :::
-    :::
     **04 调度策略：顺序执行、并行执行、条件执行、循环执行。**
-    :::
-    :::
     **05 异常处理：失败重试、fallback、人工接管、终止。**
-    :::
-    :::
     **06 成本控制：token 预算、模型调用次数、工具调用次数。**
-    :::
-    :::
     **07 日志追踪：每个节点的输入、输出、耗时、错误和中间产物。**
-    :::
-    :::
     **08 安全治理：权限、密钥、敏感操作审批、输出拦截。**
-    :::
-    :::
     
     ### 7.2 节点状态机
     
     建议每个节点运行时都有明确状态：
     
-    idle -> ready -> running -> succeeded  
-                           -> failed  
-                           -> skipped  
-                           -> waiting\_approval  
-                           -> cancelled
+```text
+idle -> ready -> running -> succeeded
+                       -> failed
+                       -> skipped
+                       -> waiting_approval
+                       -> cancelled
+```
     
     这种状态机可以直接驱动画布展示。例如：
     
@@ -526,122 +532,90 @@ Tool 的特点是：
     
     ### 7.3 编译阶段伪代码
     
-    **function**compileWorkflow(definition) {  
-    assertValidSchema(definition);  
-    
-    **const** nodeMap\=**new**Map();
-    
-    **const** outgoing\=**new**Map();
-    
-    **const** incomingCount\=**new**Map();
-    
-    **for** (**const** node**of** definition.nodes) {
-    
-    **if** (nodeMap.has(node.id)) {
-    
-    **thrownew**Error(\`Duplicate node id: ${node.id}\`);
-    
-        }
-    
-        nodeMap.set(node.id,normalizeNode(node));
-    
-        outgoing.set(node.id, \[\]);
-    
-        incomingCount.set(node.id,0);
-    
-      }
-    
-    **for** (**const** edge**of** definition.edges) {
-    
-    **if** (!nodeMap.has(edge.source)||!nodeMap.has(edge.target)) {
-    
-    **thrownew**Error(\`Invalid edge: ${edge.id}\`);
-    
-        }
-    
-        outgoing.get(edge.source).push(edge.target);
-    
-        incomingCount.set(edge.target, incomingCount.get(edge.target)+1);
-    
-      }
-    
-    detectIllegalCycles(nodeMap, outgoing);
-    
-    validateBindings(nodeMap, outgoing);
-    
-    validatePolicies(nodeMap);
-    
-    **return** { nodeMap, outgoing, incomingCount };
-    
+```ts
+function compileWorkflow(definition) {
+  assertValidSchema(definition);
+
+  const nodeMap = new Map();
+  const outgoing = new Map();
+  const incomingCount = new Map();
+
+  for (const node of definition.nodes) {
+    if (nodeMap.has(node.id)) {
+      throw new Error(`Duplicate node id: ${node.id}`);
     }
+
+    nodeMap.set(node.id, normalizeNode(node));
+    outgoing.set(node.id, []);
+    incomingCount.set(node.id, 0);
+  }
+
+  for (const edge of definition.edges) {
+    if (!nodeMap.has(edge.source) || !nodeMap.has(edge.target)) {
+      throw new Error(`Invalid edge: ${edge.id}`);
+    }
+
+    outgoing.get(edge.source).push(edge.target);
+    incomingCount.set(edge.target, incomingCount.get(edge.target) + 1);
+  }
+
+  detectIllegalCycles(nodeMap, outgoing);
+  validateBindings(nodeMap, outgoing);
+  validatePolicies(nodeMap);
+
+  return { nodeMap, outgoing, incomingCount };
+}
+```
     
     ### 7.4 运行阶段伪代码
     
-    **asyncfunction**runWorkflow(compiled, input, services) {  
-    **const** ctx\=createRunContext(input);  
-    **const** readyQueue\=seedStartNodes(compiled);  
-    
-    **while** (readyQueue.length\>0) {
-    
-    **const** nodeId\= readyQueue.shift();
-    
-    **const** node\= compiled.nodeMap.get(nodeId);
-    
-    **if** (!canExecute(node, ctx))**continue**;
-    
-    **const** record\=beginNodeRun(ctx, node);
-    
-    **try** {
-    
-    enforceBudget(ctx, node);
-    
-    enforcePermission(ctx, node);
-    
-    **const** resolvedInputs\=resolveBindings(node.inputs, ctx.blackboard);
-    
-    **const** result\=**await**executeNode(node, resolvedInputs, services, ctx);
-    
-    writeOutputs(ctx.blackboard, node.id, result.outputs);
-    
-    finishNodeRun(record,"succeeded", result.meta);
-    
-    **const** nextNodes\=activateSuccessors(compiled, node, ctx.blackboard);
-    
-          readyQueue.push(...nextNodes);
-    
-        }**catch** (error) {
-    
-    recordError(record, error);
-    
-    **if** (shouldRetry(node, record, error)) {
-    
-            readyQueue.push(nodeId);
-    
-    **continue**;
-    
-          }
-    
-    **const** fallbackNodes\=activateFallback(compiled, node, error, ctx);
-    
-    **if** (fallbackNodes.length\>0) {
-    
-            readyQueue.push(...fallbackNodes);
-    
-          }**else** {
-    
-    markRunFailed(ctx, node, error);
-    
-    **break**;
-    
-          }
-    
-        }
-    
-      }
-    
-    **return**finalizeRun(ctx);
-    
+```ts
+async function runWorkflow(compiled, input, services) {
+  const ctx = createRunContext(input);
+  const readyQueue = seedStartNodes(compiled);
+
+  while (readyQueue.length > 0) {
+    const nodeId = readyQueue.shift();
+    const node = compiled.nodeMap.get(nodeId);
+
+    if (!canExecute(node, ctx)) continue;
+
+    const record = beginNodeRun(ctx, node);
+
+    try {
+      enforceBudget(ctx, node);
+      enforcePermission(ctx, node);
+
+      const resolvedInputs = resolveBindings(node.inputs, ctx.blackboard);
+      const result = await executeNode(node, resolvedInputs, services, ctx);
+
+      writeOutputs(ctx.blackboard, node.id, result.outputs);
+      finishNodeRun(record, "succeeded", result.meta);
+
+      const nextNodes = activateSuccessors(compiled, node, ctx.blackboard);
+      readyQueue.push(...nextNodes);
+    } catch (error) {
+      recordError(record, error);
+
+      if (shouldRetry(node, record, error)) {
+        readyQueue.push(nodeId);
+        continue;
+      }
+
+      const fallbackNodes = activateFallback(compiled, node, error, ctx);
+
+      if (fallbackNodes.length > 0) {
+        readyQueue.push(...fallbackNodes);
+      } else {
+        markRunFailed(ctx, node, error);
+        break;
+      }
     }
+  }
+
+  return finalizeRun(ctx);
+}
+```
     
     ### 7.5 Agent 节点的停止条件
     
@@ -663,20 +637,22 @@ Tool 的特点是：
     
     例如：
     
-    {  
-    "type":"agent",  
-    "props":{  
-    "goal":"分析需求并给出页面实现方案",  
-    "tools":\["search\_component\_docs","query\_design\_rules"\],  
-    "model":"gpt-4.1"  
-    },  
-    "policies":{  
-    "maxSteps":8,  
-    "maxToolCalls":5,  
-    "timeoutMs":60000,  
-    "approvalRequiredTools":\["create\_pull\_request"\]  
-    }  
-    }
+```json
+{
+  "type": "agent",
+  "props": {
+    "goal": "分析需求并给出页面实现方案",
+    "tools": ["search_component_docs", "query_design_rules"],
+    "model": "gpt-4.1"
+  },
+  "policies": {
+    "maxSteps": 8,
+    "maxToolCalls": 5,
+    "timeoutMs": 60000,
+    "approvalRequiredTools": ["create_pull_request"]
+  }
+}
+```
     
     ## [圆角星星] 8. MCP 与工具链接入 [圆角星星]
     
@@ -764,25 +740,27 @@ Tool 的特点是：
     
     ### 9.2 建议的日志结构
     
-    {  
-    "trace\_id":"tr\_01J...",  
-    "run\_id":"run\_20260527\_001",  
-    "workflow\_id":"wf\_frontend\_demo",  
-    "workflow\_version":"1.0.0",  
-    "node\_id":"llm\_1",  
-    "node\_type":"llm",  
-    "status":"succeeded",  
-    "latency\_ms":2840,  
-    "retry\_count":0,  
-    "model":"gpt-4.1",  
-    "tool\_name":**null**,  
-    "prompt\_tokens":1632,  
-    "completion\_tokens":278,  
-    "cost\_estimate":0**.012**,  
-    "error\_class":**null**,  
-    "approval\_required":**false**,  
-    "timestamp":"2026-05-27T10:24:13+09:00"  
-    }
+```json
+{
+  "trace_id": "tr_01J...",
+  "run_id": "run_20260527_001",
+  "workflow_id": "wf_frontend_demo",
+  "workflow_version": "1.0.0",
+  "node_id": "llm_1",
+  "node_type": "llm",
+  "status": "succeeded",
+  "latency_ms": 2840,
+  "retry_count": 0,
+  "model": "gpt-4.1",
+  "tool_name": null,
+  "prompt_tokens": 1632,
+  "completion_tokens": 278,
+  "cost_estimate": 0.012,
+  "error_class": null,
+  "approval_required": false,
+  "timestamp": "2026-05-27T10:24:13+09:00"
+}
+```
     
     ### 9.3 成本控制
     

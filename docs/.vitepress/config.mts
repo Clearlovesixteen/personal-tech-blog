@@ -14,6 +14,7 @@ export default defineConfig({
     ['meta', { name: 'theme-color', content: '#f36f45' }]
   ],
   markdown: {
+    lineNumbers: true,
     image: {
       lazyLoading: true
     }

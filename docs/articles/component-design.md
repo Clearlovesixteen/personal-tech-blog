@@ -8,7 +8,7 @@
 
 拿到新需求以后，我个人的第一件事，并不是写代码，而是找异同，如果之前有沉淀好的通用性组件能拿来复用是最好的， 如果没有的话，如图所示，这是我拆分的页面模块，这个比较重要，因为涉及到代码的书写，以及抽象出的组件是否通用的问题，我以什么视角去拆？那就是是否具有业务属性？这个模块是否通用？这个模块是否是服务于相同的功能点？下面我详细说下我的书写和整体的设计架构思路
 
-#### ![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/KM7qeobRyRB3dlpj/img/bbd2615e-532c-49f3-a31f-774a76522e47.png)
+#### ![image.png](/images/doc-image-01-05cc67f14d.png)
 
 ##### 概述：
 
@@ -22,7 +22,7 @@
 
 如图所示，我这边组件分为主组件、子组件和状态层。状态管理独立于UI，但通过Hook无缝注入，避免全局状态污染。同时，不引入过多抽象层（如Redux），而是用轻量观察者模式，其实看我组件目录就能看出来我的组件结构
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/KM7qeobRyRB3dlpj/img/b20a827b-5b6b-447a-acc9-0c79bf53d357.png)
+![image.png](/images/doc-image-02-e78e118fbf.png)
 
 ##### 整体架构的实现:
 

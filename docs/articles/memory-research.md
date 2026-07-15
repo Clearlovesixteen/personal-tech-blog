@@ -4,11 +4,11 @@
 
 先看看这个图：
 
-![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/d7ea980bc81a738553c6f3c203206a89.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/YdgOk2b5dwY5Kq4B/img/ac9cb634-d204-4e75-af4c-0cf92a3b0f00.png)
+![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/d7ea980bc81a738553c6f3c203206a89.png](/images/doc-image-24-637926c5cc.png)
 
 如果进行一次对话的话，传给LLM模型有个message数组，一开始只会有SystemMessage和HumanMessage两种消息，但是如果经过LLM语义理解后，可能要完成你的需求模型会返回对应所需要的Tool\_call，也就是对应的工具集，然后我们基于 tool\_calls 去调用工具，然后把结果封装成 ToolMessage 也放入 messages 数组。然后messages 数组里就有了 SystemMessage、HumanMessage、AIMessage、ToolMessage（如下图所示），以此循环进行第二次的LLM调用，以此往复直到不再有tools\_calls，然后再把当次AI message当作结果返回
 
-![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/cf700d8084498eaddbaf8b2258652989.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/YdgOk2b5dwY5Kq4B/img/fe00c126-2b24-4cf2-8899-b1815610d9e4.png)
+![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/cf700d8084498eaddbaf8b2258652989.png](/images/doc-image-25-f33ce75ad6.png)
 
 到这里，流程大概应该很清楚了，我总结一下，就是递归的原理，无tools\_calls就是递归的循环结束的必要条件。好，接下来，有些人可能已经出现了疑问了，**因为一般的模型上下文大概是200k token，那如果message的东西调用LLM次数足够多，那这样上下文token是不是会爆炸了**？这个就是我们今天主要要说的点，如何去基于message数组去管理memory。
 
@@ -16,7 +16,7 @@
 
 下面我尽量让大家能清楚的了解到目前主流的解决方案：**截断，总结，检索**
 
-首先，在用cursor的时候，大家应该都应该看到过一个现象![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/fc3ae88917ba5cc67a3a842b91d1b20f.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/YdgOk2b5dwY5Kq4B/img/eb6f8bf2-c1e8-42a1-bdb8-97d8a0561f1b.png)
+首先，在用cursor的时候，大家应该都应该看到过一个现象![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/fc3ae88917ba5cc67a3a842b91d1b20f.png](/images/doc-image-26-c0963913d3.png)
 
 如果到达100%，cursor实际上会进行总结，然后进行下一轮的计数
 
@@ -26,11 +26,11 @@
 
 一个是存储层：
 
-![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/4fc6d7dc4ddd92a255482c7b4894a20f.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/YdgOk2b5dwY5Kq4B/img/048f80db-1f5a-4b34-9b28-18266403a5f9.png)
+![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/4fc6d7dc4ddd92a255482c7b4894a20f.png](/images/doc-image-27-c17ee27379.png)
 
 一个是逻辑层：
 
-![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/6754e72b00243c2361eba003ab8f61a6.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/YdgOk2b5dwY5Kq4B/img/9a0427be-2401-4884-9862-bb703c40cb33.png)
+![/Users/hpt-qf/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_59cubby5d3lg22_4346/temp/RWTemp/2026-03/6754e72b00243c2361eba003ab8f61a6.png](/images/doc-image-28-db97a69ede.png)
 
 但是现在这所有的api都被废弃掉了
 

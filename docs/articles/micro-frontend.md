@@ -17,7 +17,7 @@
 *   MPA （多页应用模式）
     
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/r4mlQ5bNw1oENlxo/img/fad0f068-f6d2-4ff8-81cd-369ca4c53e8a.png)
+![image.png](/images/doc-image-29-a1ffd56f61.png)
 
 举个例子，如果把甘草医生整个系统看成是个大的业务系统，那么将业务系统分为多个仓库维护，在首页聚合所有平台的入口 ，这种开发模式就是MPA
 
@@ -143,7 +143,7 @@
     
     在讲之前，先请大家先来看架构图，市面上所有的微前端框架基本是都是按照这几个模块去实现的，只是每个人实现方式不一样而已（这个图是我备忘录里很久的包糨图了，所以有点糊😅）
     
-    ![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/r4mlQ5bNw1oENlxo/img/6d07902f-07b5-46fe-842e-afdc2df81a96.png)
+    ![image.png](/images/doc-image-30-06cde3e9cd.png)
     
     ###### 2.2.1: 子应用的加载和卸载
     

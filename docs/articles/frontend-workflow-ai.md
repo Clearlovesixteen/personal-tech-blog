@@ -20,7 +20,7 @@ github Dify:[https://github.com/langgenius/dify](https://github.com/langgenius/
 
 整体架构：我偷的QQ机器人开放平台的架构图，其实现在大部分市面上的的agent都可以拿这种图去实现，可以自己理解一下，再往下看
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/meonarb9keRRrqXx/img/81b1ec94-8804-4556-84e5-00980b339ea7.png)
+![image.png](/images/doc-image-10-bc82e6012a.png)
 
 前端实现
 
@@ -30,11 +30,11 @@ github Dify:[https://github.com/langgenius/dify](https://github.com/langgenius/
 
 大概的效果我就借用coze的了，之前做的东西在内网，访问不了，哈哈哈，大概效果，如图所示：
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/meonarb9keRRrqXx/img/2cc68bed-7018-493b-8ddc-d4e931b64a3c.png)
+![image.png](/images/doc-image-11-7b89e1bcaa.png)
 
 之前搞的，大概的展现形式是这样的，
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/RlDrnyPkLt3n5bwj/2454f07831074d8e8e74c6866b5be45c1485.png)
+![image](/images/doc-image-12-0297d2de49.png)
 
 里面最重要的是什么？
 
@@ -255,14 +255,14 @@ Json Schema 协议，这个协议为什么重要，因为它是贯穿渲染和
 
 运行的流程，我这里就偷了一张图：
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/meonarb9keRRrqXx/img/d295a5f8-8737-41c9-8843-002edc4ea6e2.png)
+![image.png](/images/doc-image-13-3293b250dc.png)
 
 说到这里，其实技术上的事已经解决一大部分了，后面就得从产品的角度去思考，怎么给用户用呢？不可能就直接给他配置协议吧或者workFlow吧？那就是抽成解决方案,如图所示：
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/meonarb9keRRrqXx/img/651d4efd-42c9-4743-9224-3a44113ab0dd.png)
+![image.png](/images/doc-image-14-8bd42155ee.png)
 
 这个是coze的平台，这里面每一个应用其实后面对应的都是一个workFlow工作流，只是这些应用的作者已经帮你配置好了，其实如果真走到这步，技术能力还是可以得到提升的，那从产品角度的话也能初步具有形态了，从专业性角度来看，后面前端只需要多看下前沿的agent，结合行业前沿的思路去迭代实现就行，至于产品好与坏和技术其实没多大关系，在保证性能和交互的情况下，产品的好与坏其实跟产品经理对于产品的定位的理解有很大关系，这里就不写那么多了，我自己也是半桶水
 
 写在最后的彩蛋，这里让柳哥测试一下这个agent应用好不好用，柳哥能看到的话，去试一哎，测评一下
 
-![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/meonarb9keRRrqXx/img/22b6d602-ecd2-492e-aea7-9f3b52f17b66.png)
+![image.png](/images/doc-image-15-bdbeabd19a.png)

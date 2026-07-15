@@ -2,7 +2,7 @@
 
 ## 前端知识库系统的价值：
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/7085935c-8fa9-4ce1-a7e9-16264bae8a16.webp)
+![image](/images/doc-image-16-20e1a16a32.webp)
 
 ### 原型图：
 
@@ -12,7 +12,7 @@
 
 文档会做权限管理，只有有权限的文档可以检索出来用来生成回答。
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/432709be-4ada-4146-98c9-a7c19fdd63b5.webp)
+![image](/images/doc-image-17-88ae08c76c.webp)
 
 支持这些文档类型检索：
 
@@ -36,7 +36,7 @@
 
 用视频理解模型做全维度内容解析，同步提取音频文字与画面视觉信息，整合生成完整文本内容用于检索，并输出视频多模态向量，实现图文视频跨模态检索。
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/0bc0540f-41df-415a-8603-b9594bdf5318.webp)
+![image](/images/doc-image-18-5660dea123.webp)
 
 ### 技术栈：
 
@@ -61,7 +61,7 @@ LangChain、LangGraph、DeepAgents、Vercel AI SDK、Nest、Redis、PostgreSQL
 8.  本地开发用 LangSmith 调试，线上用 LangFuse 收集数据，实现全链路观测，记录检索耗时、LLM 调用成本、问答召回来源、模型报错日志等。搭建 RAG 和 Agent 效果量化评估机制，自动跑实验来评估检索效果。
     
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/1d782132-bcc9-4909-ba83-b56772ca4866.webp)
+![image](/images/doc-image-19-ee3df4322f.webp)
 
 ### 各个库的功能点：
 
@@ -117,11 +117,11 @@ chat\_session 对话会话表、chat\_message 问答消息记录表
 *   会话级长期记忆：单次对话上下文
     
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/6730822b-8a91-4bc1-8408-cc5115baad77.webp)
+![image](/images/doc-image-20-b233783696.webp)
 
 初步决定的文件解析流程：
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/30f5af3a-eacf-4dda-be0e-64cdd032bed7.webp)
+![image](/images/doc-image-21-42009e720f.webp)
 
 ps: 这里文档上传后的处理耗时比较高，所以我们放到 Redis 任务队列里，异步来做,加一个任务表来记录进度，前端可以从这个表中查询任务状态。
 
@@ -148,7 +148,7 @@ ps: 这里文档上传后的处理耗时比较高，所以我们放到 Redis 
 9.  问答记录持久化存入 chat\_session/chat\_message 表。
     
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/f61d92c7-1d7b-4d82-a5bf-76200f73c44e.webp)
+![image](/images/doc-image-22-f1e82213b8.webp)
 
 ps: 权限白名单就是当前登录用户能访问的全部文件夹、文档 ID 集合，放在 redis 里，我们检索出文档后，会过滤掉无权限的文档，再来生成回答。
 
@@ -156,7 +156,7 @@ ps: 权限白名单就是当前登录用户能访问的全部文件夹、文档
 
 Dify 搭建的知识库支持递归分块、向量 + 全文检索 + 重排的混合检索，但是它不支持知识图谱，无法通过 LLM 自动抽取文档中的实体、关系，从而实现多跳关联推理，缺少分级数据权限管控，无法按部门、岗位隔离知识库与文档，检索时不能自动过滤无权限资料，存在内部涉密文档泄露风险，不支持完整多模态解析与检索链路，缺少图片 OCR 图文识别、音频 ASR 转写、视频理解解析能力，无法处理图片、音频、视频类业务资料，平台底层架构封装度高，难以深度对接自定义 Agent，拓展成本极高。
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/mxPOG5zMA0Q7NnKa/img/637ce9c0-3e1a-4982-a883-4c0d7407ad50.webp)
+![image](/images/doc-image-23-e7b0084323.webp)
 
 ## 总结
 

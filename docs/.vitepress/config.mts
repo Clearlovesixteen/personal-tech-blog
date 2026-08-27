@@ -6,7 +6,7 @@ const base = process.env.BASE_PATH ?? (repoName && !isUserPage ? `/${repoName}/`
 
 export default defineConfig({
   title: '技术札记',
-  description: '前端工程、AI Workflow、RAG、Agent 与系统设计实践',
+  description: '前端工程、AI Workflow、RAG、Graph RAG、知识图谱、Agent 与系统设计实践',
   base,
   cleanUrls: true,
   lastUpdated: true,
@@ -79,7 +79,7 @@ export default defineConfig({
       ]
     },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/' }
+      { icon: 'github', link: 'https://github.com/Clearlovesixteen/personal-tech-blog' }
     ],
     footer: {
       message: 'Built with VitePress and GitHub Pages.',

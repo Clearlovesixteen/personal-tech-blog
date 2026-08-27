@@ -1,6 +1,6 @@
 # 技术札记
 
-一个持续整理前端工程、AI Workflow、RAG、Agent、知识库与服务端实践的个人技术博客。站点基于 VitePress 构建，文章使用 Markdown 维护，并通过 GitHub Actions 自动发布到 GitHub Pages。
+一个持续整理前端工程、AI Workflow、RAG、Graph RAG、知识图谱、Agent、知识库与服务端实践的个人技术博客。站点基于 VitePress 构建，文章使用 Markdown 维护，并通过 GitHub Actions 自动发布到 GitHub Pages。
 
 > **在线访问：[技术札记 · 个人技术博客](https://clearlovesixteen.github.io/personal-tech-blog/)**
 
@@ -14,7 +14,7 @@
 
 本站主要关注以下方向：
 
-- AI 工程：Workflow、Agent、RAG、记忆检索与知识库系统
+- AI 工程：Workflow、Agent、RAG、Graph RAG、知识图谱、记忆检索与知识库系统
 - 前端工程：微前端、组件设计、复杂表单与工程化实践
 - 产品体验：WMS 等业务系统从 UI 规范走向 UX 效率优化
 - 服务端技术：NestJS 的模块设计、依赖注入与工程组织
@@ -25,6 +25,7 @@
 
 | 文档 | 内容简介 |
 | --- | --- |
+| [Neo4j 知识图谱和 Graph RAG](https://clearlovesixteen.github.io/personal-tech-blog/articles/neo4j-graph-rag) | 从关系建模、实体消歧到局部与全局查询，理解 Graph RAG 的应用边界 |
 | [前端领域 Workflow 与 AI 结合的深度技术分享](https://clearlovesixteen.github.io/personal-tech-blog/articles/frontend-workflow-ai-deep) | 系统说明前端如何参与并主导 Workflow 与 AI 系统建设 |
 | [浅谈前端领域 WorkFlow 与 AI 的结合](https://clearlovesixteen.github.io/personal-tech-blog/articles/frontend-workflow-ai) | 从可编排流程、协议解析和运行链路理解 AI Agent 产品形态 |
 | [知识库系统](https://clearlovesixteen.github.io/personal-tech-blog/articles/knowledge-base-system) | 文档管理、AI 问答、知识图谱与权限检索的产品设计 |

@@ -4,7 +4,7 @@ layout: home
 hero:
   name: 技术札记
   text: 前端工程与 AI 系统实践
-  tagline: 这里沉淀 Workflow、RAG、Agent 记忆、微前端、组件设计、Formily、NestJS 与 B 端 UX 的实践笔记。
+  tagline: 这里沉淀 Workflow、RAG、Graph RAG、知识图谱、Agent 记忆、前端架构与服务端实践笔记。
   actions:
     - theme: brand
       text: 阅读文章
@@ -17,7 +17,7 @@ features:
   - title: AI Workflow
     details: 从工具、Agent 到 Workflow，记录前端如何把智能流程做成可配置、可观测、可治理的产品系统。
   - title: 知识工程
-    details: RAG、Agentic RAG、记忆检索与知识库系统的概念拆解和落地思考。
+    details: RAG、Graph RAG、Neo4j 知识图谱、记忆检索与知识库系统的概念拆解和落地思考。
   - title: 前端架构
     details: 微前端、组件抽象、Formily 表单联动、B 端 UX 规范等工程经验归档。
 ---
@@ -27,7 +27,7 @@ features:
 <div class="article-grid">
   <div class="article-card">
     <a href="./articles/neo4j-graph-rag">Neo4j 知识图谱和 Graph RAG</a>
-    <p>从“找内容”到“查关系”，理解图数据库和多跳检索的价值。</p>
+    <p>从关系建模、实体消歧到局部与全局查询，理解 Graph RAG 的价值和应用边界。</p>
   </div>
   <div class="article-card">
     <a href="./articles/frontend-workflow-ai-deep">前端领域 Workflow 与 AI 结合的深度技术分享</a>

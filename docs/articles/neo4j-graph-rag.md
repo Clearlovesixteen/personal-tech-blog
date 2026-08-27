@@ -35,7 +35,7 @@ Neo4j 不一样，它直接把数据存成“节点”和“关系”。
 
 然后再给它们加上关系：
 
-![业务实体关系示例](/images/neo4j-entity-relationship.png)
+![业务实体关系示例](https://clearlovesixteen.github.io/personal-tech-blog/images/neo4j-entity-relationship.png)
 
 这时候查一个需求，就可以顺着关系继续查页面、模块、接口和修改记录。
 
@@ -123,7 +123,7 @@ REQUIRE api.id IS UNIQUE
 
 图数据库返回节点和关系后，系统把查询结果、来源和证据放进 Prompt，最后再让大模型组织回答。
 
-![Graph RAG 查询流程](/images/graph-rag-query-flow.png)
+![Graph RAG 查询流程](https://clearlovesixteen.github.io/personal-tech-blog/images/graph-rag-query-flow.png)
 
 传统 RAG 检索的主要是文档片段，Graph RAG 检索的主要是实体和关系。
 
@@ -206,7 +206,7 @@ Graph RAG 不是所有问题都执行同一种图查询。
 
 三种检索组合起来，流程大概是这样的：
 
-![混合检索与权限过滤流程](/images/hybrid-retrieval-flow.png)
+![混合检索与权限过滤流程](https://clearlovesixteen.github.io/personal-tech-blog/images/hybrid-retrieval-flow.png)
 
 普通的文档问答可以走向量和关键词检索。
 

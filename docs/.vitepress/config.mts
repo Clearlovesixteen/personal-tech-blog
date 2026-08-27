@@ -48,6 +48,7 @@ export default defineConfig({
           text: 'AI 与知识工程',
           collapsed: false,
           items: [
+            { text: 'Neo4j 知识图谱和 Graph RAG', link: '/articles/neo4j-graph-rag' },
             { text: '前端领域 Workflow 与 AI 结合的深度技术分享', link: '/articles/frontend-workflow-ai-deep' },
             { text: '浅谈前端领域 WorkFlow 与 AI 的结合', link: '/articles/frontend-workflow-ai' },
             { text: '知识库系统', link: '/articles/knowledge-base-system' },

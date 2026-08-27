@@ -26,6 +26,10 @@ features:
 
 <div class="article-grid">
   <div class="article-card">
+    <a href="./articles/neo4j-graph-rag">Neo4j 知识图谱和 Graph RAG</a>
+    <p>从“找内容”到“查关系”，理解图数据库和多跳检索的价值。</p>
+  </div>
+  <div class="article-card">
     <a href="./articles/frontend-workflow-ai-deep">前端领域 Workflow 与 AI 结合的深度技术分享</a>
     <p>面向前端工程师的 Agentic Workflow 系统建设方法。</p>
   </div>

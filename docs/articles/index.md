@@ -5,6 +5,7 @@
 ## AI 与知识工程
 
 <div class="article-grid">
+  <div class="article-card"><a href="./neo4j-graph-rag">Neo4j 知识图谱和 Graph RAG</a><p>从“找内容”到“查关系”，说清图数据库、多跳检索和 Graph RAG。</p></div>
   <div class="article-card"><a href="./frontend-workflow-ai-deep">前端领域 Workflow 与 AI 结合的深度技术分享</a><p>系统化说明前端如何参与并主导 Workflow + AI 系统建设。</p></div>
   <div class="article-card"><a href="./frontend-workflow-ai">浅谈前端领域 WorkFlow 与 AI 的结合</a><p>从可编排流程、协议解析和运行链路理解 AI Agent 产品形态。</p></div>
   <div class="article-card"><a href="./knowledge-base-system">知识库系统</a><p>文档管理、AI 问答、知识图谱与权限检索的产品设计。</p></div>

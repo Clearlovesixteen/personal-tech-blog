@@ -39,6 +39,7 @@
 
 | 文档 | 内容简介 |
 | --- | --- |
+| [Sentry 基本原理](https://clearlovesixteen.github.io/personal-tech-blog/articles/sentry) | 错误捕获、Source Map、Issue 分组、性能追踪与 Session Replay 原理 |
 | [微前端架构](https://clearlovesixteen.github.io/personal-tech-blog/articles/micro-frontend) | 应用拆分、独立部署与运行时集成的架构实践 |
 | [组件设计](https://clearlovesixteen.github.io/personal-tech-blog/articles/component-design) | 结合 ERP 场景讨论组件边界、状态管理与复用策略 |
 | [Formily 原理及场景应用](https://clearlovesixteen.github.io/personal-tech-blog/articles/formily) | 从复杂表单联动场景理解 Formily 的响应式表单模型 |

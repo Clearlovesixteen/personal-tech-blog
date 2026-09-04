@@ -26,6 +26,10 @@ features:
 
 <div class="article-grid">
   <div class="article-card">
+    <a href="./articles/sentry">Sentry 基本原理</a>
+    <p>从错误捕获到 Source Map、Issue 分组、性能追踪和 Session Replay，理解 Sentry 的完整链路。</p>
+  </div>
+  <div class="article-card">
     <a href="./articles/neo4j-graph-rag">Neo4j 知识图谱和 Graph RAG</a>
     <p>从关系建模、实体消歧到局部与全局查询，理解 Graph RAG 的价值和应用边界。</p>
   </div>

@@ -19,6 +19,7 @@
 ## 前端工程与架构
 
 <div class="article-grid">
+  <div class="article-card"><a href="./sentry">Sentry 基本原理</a><p>从一次线上报错出发，理解错误捕获、Source Map、Issue 分组、性能追踪与 Session Replay。</p></div>
   <div class="article-card"><a href="./micro-frontend">微前端架构</a><p>围绕应用拆分、独立部署和运行时集成展开的架构笔记。</p></div>
   <div class="article-card"><a href="./component-design">组件设计</a><p>结合 ERP 场景思考组件边界、状态管理和复用策略。</p></div>
   <div class="article-card"><a href="./formily">Formily 原理及场景应用</a><p>从复杂表单联动场景理解 Formily 的响应式表单模型。</p></div>

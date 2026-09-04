@@ -63,6 +63,7 @@ export default defineConfig({
           text: '前端工程与架构',
           collapsed: false,
           items: [
+            { text: 'Sentry 基本原理', link: '/articles/sentry' },
             { text: '微前端架构', link: '/articles/micro-frontend' },
             { text: '组件设计', link: '/articles/component-design' },
             { text: 'Formily 原理及场景应用', link: '/articles/formily' },
